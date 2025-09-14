@@ -1,4 +1,5 @@
 using UnityEngine;
+using static UnityEngine.GraphicsBuffer;
 
 public class CameraOrbit : MonoBehaviour
 {
@@ -18,8 +19,23 @@ public class CameraOrbit : MonoBehaviour
     private float currentX = 0f; // Rotation horizontale
     private float currentY = 20f; // Rotation verticale
 
+    private bool active = false;
+
+    void Start()
+    {
+        // Active le suivi après 10 secondes
+        Invoke(nameof(ActivateFollow), 20f);
+    }
+
+    void ActivateFollow()
+    {
+        active = true;
+    }
+
     void LateUpdate()
     {
+        if (!active || player == null) return;
+
         // --- Zoom avec molette ---
         float scroll = Input.GetAxis("Mouse ScrollWheel");
         distance -= scroll * zoomSpeed;
